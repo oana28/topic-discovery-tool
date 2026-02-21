@@ -40,5 +40,3 @@ def main():
             break
         response = agent.invoke({"messages":[uinput]},config)
         print(response['messages'][-1].content)
-
-main()
