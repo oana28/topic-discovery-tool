@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from agent import agent_creation, get_config
+from backend.agent import agent_creation, get_config
 from pydantic import BaseModel
 import asyncio 
 
