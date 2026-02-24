@@ -20,7 +20,7 @@ def agent_creation():
     Using the search info on web tool, search the web for the latest information relevant to their question. Return a clear, accurate answer to the user and offer more information or details if requested."""
 
     agent = create_agent(
-        model=ChatOllama(model="qwen3"),
+        model=ChatOllama(model="qwen3",base_url="http://ollama:11434"),
         tools=[search_info_on_web],
         system_prompt=prompt,
         checkpointer=InMemorySaver()
