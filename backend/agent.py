@@ -5,15 +5,36 @@ from typing import Dict, Any
 from langchain.agents import create_agent
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
+from sentence_transformers import CrossEncoder
+import torch
 
 load_dotenv()
 
 tavily = TavilyClient()
 
+_cross_encoder = CrossEncoder("BAAI/bge-reranker-large")
+
+
 @tool
 def search_info_on_web(query:str)->Dict[str, Any]:
-    """Search information on the web"""
-    return tavily.search(query)
+    """Search information on the web and return re-ranked results for better answer quality"""
+    hits = tavily.search(query, max_results=8).get("results", [])
+
+    scores = torch.sigmoid(
+        torch.tensor(
+            _cross_encoder.predict([[query, h.get("content", "")] for h in hits])
+        )
+    ).tolist()
+
+    ranked = sorted(zip(scores, hits), key=lambda x: x[0], reverse=True)
+
+    return {
+        "query": query,
+        "results": [
+            {"title": h.get("title"), "url": h.get("url"), "content": h.get("content"), "score": round(score, 4)}
+            for score, h in ranked[:3]
+        ]
+    }
 
 def agent_creation():
     prompt = """You are an ai assistant with access to web search and up-to-date data retrieval. The user will give you a questions about a domain they care about(tech, news, sports, etc.). 
