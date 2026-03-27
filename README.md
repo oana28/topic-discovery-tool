@@ -4,35 +4,39 @@ An AI research assistant that answers questions using web search and streams res
 
 ## Tech stack
 
-**Backend**
+- Frontend: React, TypeScript
 
-- FastAPI
-- Langchain
-- Tavily
-- Ollama + Qwen3
+- Backend: FastAPI, Tavily (web search)
 
-**Frontend**
+- AI Agent: LangChain, Ollama
 
-- Vite
-- React
-- Typescript
-
-## Prerequisites
-
-- Docker
-- Ollama
-- API key for Tavily
+- Containerization: Docker
 
 ## Getting started
 
-### 1. Clone git repository
+### 1. Setup
+
+Clone git repository
 
 ```bash
     git clone https://github.com/oana28/topic-discovery-tool.git
     cd backend
 ```
 
-### 2. Add .env file which will contain the tavily api key
+Create and activate virtual environment
+
+```bash
+    python -m venv venv
+    venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+    pip install -r requirements.txt
+```
+
+### 2. Create '.env' file in the root directory
 
 ```bash
     TAVILY_API_KEY='...'
@@ -56,14 +60,14 @@ An AI research assistant that answers questions using web search and streams res
     docker compose up --build
 ```
 
-### 6. Verify backend running at `http://localhost:8000/docs`
+### 6. Verify backend
 
-### 7. Start frontend locally
-
-```bash
-    cd frontend
-    npm install
-    npm run dev
+```
+http://localhost:8000/docs
 ```
 
-### 8. Open browser at `http://localhost:5173/`
+### 7. Open the app
+
+```
+http://localhost:5173/
+```
